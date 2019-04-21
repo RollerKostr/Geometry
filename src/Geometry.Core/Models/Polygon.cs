@@ -4,9 +4,9 @@ namespace Geometry.Core.Models
 {
     public class Polygon : Shape
     {
-        private readonly Vertex[] _vertices;
+        protected readonly Vertex[] _vertices;
         
-        public override double Perimeter => CalculatePerimeter();
+        public virtual double Perimeter => CalculatePerimeter();
         public override double Area => CalculateArea();
         
         public Polygon(params Vertex[] vertices)
@@ -38,7 +38,7 @@ namespace Geometry.Core.Models
             for (int vIndex = 0; vIndex < _vertices.Length; vIndex++)
             {
                 var nextVindex = vIndex == _vertices.Length - 1 ? 0 : vIndex + 1;
-                perimeter += CalculateEdgeLength(_vertices[vIndex], _vertices[nextVindex]);
+                perimeter += LineSegment.CalculateLength(_vertices[vIndex], _vertices[nextVindex]);
             }
 
             return perimeter;
@@ -60,11 +60,6 @@ namespace Geometry.Core.Models
             }
             
             return Math.Abs(area) / 2d;
-        }
-
-        protected double CalculateEdgeLength(Vertex v1, Vertex v2)
-        {
-            return Math.Sqrt((v2.X - v1.X) * (v2.Y - v1.Y));
         }
     }
 }

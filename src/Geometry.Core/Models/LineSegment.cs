@@ -1,3 +1,5 @@
+using System;
+
 namespace Geometry.Core.Models
 {
     public class LineSegment
@@ -5,6 +7,7 @@ namespace Geometry.Core.Models
         public Vertex Endpoint1 { get; }
         public Vertex Endpoint2 { get; }
         public Vertex Midpoint => CalculateMidpoint(Endpoint1, Endpoint2);
+        public double Length => CalculateLength(Endpoint1, Endpoint2);
         
         public LineSegment(Vertex endpoint1, Vertex endpoint2)
         {
@@ -20,6 +23,11 @@ namespace Geometry.Core.Models
             var midpointY = endpoint1.Y + (endpoint2.Y - endpoint1.Y) / 2d;
             
             return new Vertex(midpointX, midpointY);
+        }
+
+        public static double CalculateLength(Vertex endpoint1, Vertex endpoint2)
+        {
+            return Math.Sqrt((endpoint2.X - endpoint1.X) * (endpoint2.Y - endpoint1.Y));
         }
     }
 }

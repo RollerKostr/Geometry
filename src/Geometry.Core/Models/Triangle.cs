@@ -6,6 +6,11 @@ namespace Geometry.Core.Models
     /// <summary>The limiting case of <see cref="Polygon"/> with 3 <see cref="Vertex"/>s.</summary>
     public sealed class Triangle : Polygon
     {
+        private const double TOLERANCE = 0.000001;
+        
+        /// <summary>Is triangle has one 90 degree angle?</summary>
+        public bool IsRight => CalculateIsRight(_vertices[0], _vertices[1], _vertices[2], TOLERANCE);
+        
         public Triangle(Vertex v1, Vertex v2, Vertex v3)
             : base(v1, v2, v3)
         {
@@ -37,6 +42,27 @@ namespace Geometry.Core.Models
                        (sortedEdges[2] - (sortedEdges[0] - sortedEdges[1])) *
                        (sortedEdges[2] + (sortedEdges[0] - sortedEdges[1])) *
                        (sortedEdges[0] + (sortedEdges[1] - sortedEdges[2]))) / 4d;
+        }
+        
+        public static bool CalculateIsRight(Vertex v1, Vertex v2, Vertex v3, double tolerance)
+        {
+            var edge1 = LineSegment.CalculateLength(v1, v2);
+            var edge2 = LineSegment.CalculateLength(v2, v3);
+            var edge3 = LineSegment.CalculateLength(v3, v1);
+
+            return CalculateIsRight(edge1, edge2, edge3, tolerance);
+        }
+        
+        public static bool CalculateIsRight(double edge1, double edge2, double edge3, double tolerance)
+        {
+            var sortedEdges = new[] {edge1, edge2, edge3}
+                .OrderByDescending(i => i)
+                .ToArray();
+
+            var hypotenuseSquare = Math.Pow(sortedEdges[0], 2);
+            var sumOfSideSquares = Math.Pow(sortedEdges[1], 2) + Math.Pow(sortedEdges[2], 2);
+
+            return Math.Abs(hypotenuseSquare - sumOfSideSquares) <= tolerance;
         }
 
 
