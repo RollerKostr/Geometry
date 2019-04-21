@@ -5,30 +5,43 @@ namespace Geometry.Core.Models
     public class Polygon : Shape
     {
         private readonly Vertex[] _vertices;
-
+        
+        public override double Perimeter => CalculatePerimeter();
         public override double Area => CalculateArea();
         
         public Polygon(params Vertex[] vertices)
         {
-            _vertices = Validate(vertices);
+            CheckVertices(vertices ?? throw new ArgumentNullException(nameof(vertices)));
+            
+            _vertices = vertices;
         }
-
-
-
-        private Vertex[] Validate(Vertex[] vertices)
+        
+        protected virtual void CheckVerticesCount(Vertex[] vertices)
         {
-            if (vertices == null)
-            {
-                throw new ArgumentNullException(nameof(vertices));
-            }
-
             if (vertices.Length < 1)
             {
                 throw new ArgumentException(
                     "Polygon must consist of at least 1 vertex.", nameof(vertices));
             }
+        }
+        
+        
+        
+        private void CheckVertices(Vertex[] vertices)
+        {
+            CheckVerticesCount(vertices);
+        }
 
-            return vertices;
+        private double CalculatePerimeter()
+        {
+            var perimeter = 0d;
+            for (int vIndex = 0; vIndex < _vertices.Length; vIndex++)
+            {
+                var nextVindex = vIndex == _vertices.Length - 1 ? 0 : vIndex + 1;
+                perimeter += CalculateEdgeLength(_vertices[vIndex], _vertices[nextVindex]);
+            }
+
+            return perimeter;
         }
         
         /// <summary>
@@ -45,8 +58,13 @@ namespace Geometry.Core.Models
                 area += _vertices[xIndex].X * _vertices[yAddIndex].Y;
                 area -= _vertices[xIndex].X * _vertices[ySubIndex].Y;
             }
-
+            
             return Math.Abs(area) / 2d;
+        }
+
+        protected double CalculateEdgeLength(Vertex v1, Vertex v2)
+        {
+            return Math.Sqrt((v2.X - v1.X) * (v2.Y - v1.Y));
         }
     }
 }

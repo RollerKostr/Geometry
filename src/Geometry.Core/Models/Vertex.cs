@@ -1,9 +1,11 @@
+using System;
 using System.Diagnostics;
 using System.Globalization;
 
 namespace Geometry.Core.Models
 {
-    public readonly struct Vertex
+    // TODO[mk] rename to just Point.
+    public class Vertex
     {
         public double X { get; }
         public double Y { get; }
