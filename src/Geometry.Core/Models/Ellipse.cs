@@ -24,7 +24,7 @@ namespace Geometry.Core.Models
             SemiMinorAxisLength = semiMinorAxisLength;
 
             FocalLength = CalculateFocalLength(SemiMajorAxisLength, SemiMinorAxisLength);
-            Eccentricity = CalculateEccentricity(SemiMajorAxisLength, FocalLength);
+            Eccentricity = CalculateEccentricity(SemiMajorAxisLength, SemiMinorAxisLength);
             Focus1 = new Vertex(-FocalLength, 0d);
             Focus2 = new Vertex(FocalLength, 0d);
         }

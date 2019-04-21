@@ -55,6 +55,8 @@ namespace Geometry.Core.Models
         
         public static bool CalculateIsRight(double edge1, double edge2, double edge3, double tolerance)
         {
+            CheckEdges(edge1, edge2, edge3);
+            
             var sortedEdges = new[] {edge1, edge2, edge3}
                 .OrderByDescending(i => i)
                 .ToArray();

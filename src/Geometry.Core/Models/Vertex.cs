@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace Geometry.Core.Models
